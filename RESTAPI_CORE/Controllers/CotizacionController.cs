@@ -47,11 +47,14 @@ namespace RESTAPI_CORE.Controllers
                         }
                     }
                 }
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = lista });
+ 
+                var response = new Response<List<CotizacionBuscar>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = lista });
+                var response = new Response<List<Regla>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 

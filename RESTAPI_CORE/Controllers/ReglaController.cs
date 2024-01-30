@@ -29,12 +29,9 @@ namespace RESTAPI_CORE.Controllers
         [Route("Lista")]
         public IActionResult Lista()
         {
-
             List<Regla> lista = new List<Regla>();
-
             try
             {
-
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
@@ -42,10 +39,8 @@ namespace RESTAPI_CORE.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var rd = cmd.ExecuteReader())
                     {
-
                         while (rd.Read())
                         {
-
                             lista.Add(new Regla
                             {
 
@@ -59,17 +54,16 @@ namespace RESTAPI_CORE.Controllers
                                 valmax = Convert.ToDecimal(rd["valmax"].ToString()),
 
                             });
-                        }
-
+                        } 
                     }
                 }
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = lista });
+                var response = new Response<List<Regla>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = lista });
-
+                var response = new Response<List<Regla>>(ResponseType.Error, ex.Message); 
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }
