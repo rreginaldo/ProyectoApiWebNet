@@ -42,18 +42,18 @@ namespace RESTAPI_CORE.Controllers
                                 CotiSofkit = Convert.ToInt32(rd["CotiSofkit"]),
                                 fecha = rd["fecha"].ToString(),
                                 Cliente = rd["Cliente"].ToString(),
-                                CotiStarFoft = rd["CotiStarFoft"].ToString()                           
+                                CotiStarFoft = rd["CotiStarFoft"].ToString()
                             });
                         }
                     }
                 }
- 
+
                 var response = new Response<List<CotizacionBuscar>>(ResponseType.Success, lista);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
             catch (Exception ex)
             {
-                var response = new Response<List<Regla>>(ResponseType.Error, ex.Message);
+                var response = new Response<List<CotizacionBuscar>>(ResponseType.Error, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
@@ -74,7 +74,7 @@ namespace RESTAPI_CORE.Controllers
                     cmd.Parameters.AddWithValue("idcotizacion", idcotizacion);
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var rd = cmd.ExecuteReader())
-                    {                    
+                    {
                         while (rd.Read())
                         {
                             lista.Add(new Cotizacion
@@ -131,12 +131,14 @@ namespace RESTAPI_CORE.Controllers
 
                     }
                 }
-         
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = lista });
+
+                var response = new Response<List<Cotizacion>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = lista });
+                var response = new Response<List<Cotizacion>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
@@ -165,20 +167,21 @@ namespace RESTAPI_CORE.Controllers
                                 PRECIO = Convert.ToDouble(rd["PRECIO"].ToString()),
                                 CLIENTE = rd["CLIENTE"].ToString(),
                                 MONEDA = rd["MONEDA"].ToString(),
-                                MARCA = rd["MARCA"].ToString(),                          
-                           });
+                                MARCA = rd["MARCA"].ToString(),
+                            });
                         }
                     }
                 }
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = lista });
+                var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = lista });
+                var response = new Response<List<KardexCoti>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-
 
         [HttpGet]
         [Route("KardexVenta/")]
@@ -209,13 +212,14 @@ namespace RESTAPI_CORE.Controllers
                             });
                         }
                     }
-                }
-
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = lista });
+                } 
+                var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = lista });
+                var response = new Response<List<KardexCoti>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
@@ -249,12 +253,13 @@ namespace RESTAPI_CORE.Controllers
                         }
                     }
                 }
-
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = lista });
+                var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = codigo, response = lista });
+                var response = new Response<List<KardexCoti>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }

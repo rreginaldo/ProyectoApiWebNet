@@ -43,15 +43,11 @@ namespace RESTAPI_CORE.Controllers
 
                         while (rd.Read())
                         {
-
                             lista.Add(new Cliente
                             {
-
                                 CODIGO = rd["CODIGO"].ToString(),
                                 RAZONSOCIAL = rd["RAZONSOCIAL"].ToString(),
                                 DIRECCION = rd["DIRECCION"].ToString()
-
-
                             });
                         } 
                     }
@@ -61,8 +57,8 @@ namespace RESTAPI_CORE.Controllers
             }
             catch (Exception ex)
             { 
-                var response = new Response<List<Cliente>>(ResponseType.Success, ex.Message);
-                return StatusCode(StatusCodes.Status200OK, response);
+                var response = new Response<List<Cliente>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
@@ -83,16 +79,15 @@ namespace RESTAPI_CORE.Controllers
                     cmd.Parameters.AddWithValue("cdircli", objeto.DIRECCION);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.ExecuteNonQuery();
-                }
-
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "agregado" });
+                } 
+                var response = new Response<string>(ResponseType.Success, "agregado");
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
-
-            }
+                var response = new Response<string>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            } 
         }
 
 
@@ -114,14 +109,14 @@ namespace RESTAPI_CORE.Controllers
                     cmd.ExecuteNonQuery();
                 }
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "editado" });
+                var response = new Response<string>(ResponseType.Success, "editado");
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
-
-            }
+                var response = new Response<string>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            } 
         }
     }
 }

@@ -14,7 +14,8 @@ namespace RESTAPI_CORE.Controllers
     public class ProductoController : ControllerBase
     {
         private readonly string cadenaSQL;
-        public ProductoController(IConfiguration config) {
+        public ProductoController(IConfiguration config)
+        {
             cadenaSQL = config.GetConnectionString("CadenaSQL");
         }
 
@@ -24,13 +25,13 @@ namespace RESTAPI_CORE.Controllers
 
         [HttpGet]
         [Route("Lista")]
-        public IActionResult Lista() { 
-            
+        public IActionResult Lista()
+        {
+
             List<Producto> lista = new List<Producto>();
 
             try
             {
-
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
@@ -55,12 +56,13 @@ namespace RESTAPI_CORE.Controllers
 
                     }
                 }
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" , response = lista });
+                var response = new Response<List<Producto>>(ResponseType.Success, lista);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch(Exception error) {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message,  response = lista });
-
+            catch (Exception ex)
+            {
+                var response = new Response<List<Producto>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
@@ -103,16 +105,15 @@ namespace RESTAPI_CORE.Controllers
 
                 oproducto = lista.Where(item => item.IdProducto == idProducto).FirstOrDefault();
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = oproducto });
+                var response = new Response<Producto>(ResponseType.Success, oproducto);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = oproducto });
-
+                var response = new Response<Producto>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-
 
 
         [HttpPost]
@@ -134,14 +135,13 @@ namespace RESTAPI_CORE.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.ExecuteNonQuery();
                 }
-
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "agregado" });
+                var response = new Response<string>(ResponseType.Success, "agregado");
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message});
-
+                var response = new Response<string>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
@@ -166,13 +166,13 @@ namespace RESTAPI_CORE.Controllers
                     cmd.ExecuteNonQuery();
                 }
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "editado" });
+                var response = new Response<string>(ResponseType.Success, "editado");
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
-
+                var response = new Response<string>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
@@ -192,16 +192,14 @@ namespace RESTAPI_CORE.Controllers
                     cmd.ExecuteNonQuery();
                 }
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "eliminado" });
+                var response = new Response<string>(ResponseType.Success, "eliminado");
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
-
+                var response = new Response<string>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-
-
     }
 }

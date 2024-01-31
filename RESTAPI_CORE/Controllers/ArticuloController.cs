@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors; 
 using Microsoft.AspNetCore.Mvc;
-
 using RESTAPI_CORE.Modelos;
 using System.Data;
 using System.Data.SqlClient;
@@ -56,13 +54,13 @@ namespace RESTAPI_CORE.Controllers
 
                     }
                 }
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = listaArticulo });
+                var response = new Response<List<Articulo>>(ResponseType.Success, listaArticulo);
+                return StatusCode(StatusCodes.Status200OK, response);
             }
-            catch (Exception error)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = listaArticulo });
-
+            catch (Exception ex)
+            { 
+                var response = new Response<List<Articulo>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }
