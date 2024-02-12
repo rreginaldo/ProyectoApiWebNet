@@ -124,7 +124,19 @@ namespace RESTAPI_CORE.Controllers
                                 FecP4 = rd["FecP4"].ToString(),
                                 PrecioP4 = Convert.ToDouble(rd["PrecioP4"]),
                                 MarcaP4 = rd["MarcaP1"].ToString(),
-                                ObsP4 = rd["ObsP4"].ToString()
+                                ObsP4 = rd["ObsP4"].ToString(),
+
+                                KVVenta = Convert.ToDouble(rd["KVVenta"]),
+                                KCVenta = rd["KCVenta"].ToString(),
+                                KFVenta = rd["KFVenta"].ToString(),
+
+                                KVCotizacion = Convert.ToDouble(rd["KVCotizacion"]),
+                                KCCotizacion = rd["KCCotizacion"].ToString(),
+                                KFCotizacion = rd["KFCotizacion"].ToString(),
+
+                                KVNotaIngreso = Convert.ToDouble(rd["KVNotaIngreso"]),
+                                KCNotaIngreso = rd["KCNotaIngreso"].ToString(),
+                                KFNotaIngreso = rd["KFNotaIngreso"].ToString()
 
                             });
                         }

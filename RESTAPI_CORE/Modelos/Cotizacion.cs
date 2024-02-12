@@ -50,6 +50,18 @@
             public double PrecioP4 { get; set; }
             public string MarcaP4 { get; set; }
             public string ObsP4 { get; set; }
-            
+
+            public double KVVenta { get; set; }
+            public string KCVenta { get; set; }
+            public string KFVenta { get; set; }
+
+            public double KVCotizacion { get; set; }
+            public string KCCotizacion { get; set; }
+            public string KFCotizacion { get; set; }
+
+            public double KVNotaIngreso { get; set; }
+            public string KCNotaIngreso { get; set; }
+            public string KFNotaIngreso { get; set; }
+
     }
 }
