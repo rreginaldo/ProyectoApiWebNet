@@ -79,6 +79,8 @@ namespace RESTAPI_CORE.Controllers
                         {
                             lista.Add(new Cotizacion
                             {
+                                ID = Convert.ToInt32(rd["ID"]),
+                                idcotizacion = Convert.ToInt32(rd["idcotizacion"]),
                                 codcliente = rd["codcliente"].ToString(),
                                 Cliente = rd["nombrecliente"].ToString(),
                                 dircliente = rd["dircliente"].ToString(),
@@ -267,10 +269,131 @@ namespace RESTAPI_CORE.Controllers
                 }
                 var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
                 return StatusCode(StatusCodes.Status200OK, response);
+
             }
             catch (Exception ex)
             {
                 var response = new Response<List<KardexCoti>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("SecuenciaCoti")]
+        public IActionResult SecuenciaCoti(int codigo)
+        {
+            int Secuencia = 0;
+
+            try
+            {
+
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {
+                    conexion.Open();
+                    var cmd = new SqlCommand("TraerPreCoti", conexion);
+                    cmd.Parameters.AddWithValue("CODIGO", codigo);
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    Secuencia = int.Parse(cmd.ExecuteScalar().ToString());
+                 
+                }
+        
+                var response = new Response<int>(ResponseType.Success, Secuencia);
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (Exception ex)
+            {
+                var response = new Response<List<Cliente>>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPost]
+        [Route("Guardar")]
+        public IActionResult Guardar([FromBody] Cotizacion objeto)
+        {
+            try
+            {
+
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {
+                    conexion.Open();
+                    var cmd = new SqlCommand("Comparativo_CotizacionInsert", conexion);
+                    cmd.Parameters.AddWithValue("IDcotizacion", objeto.idcotizacion);
+                    cmd.Parameters.AddWithValue("codcliente", objeto.codcliente);
+                    cmd.Parameters.AddWithValue("nombrecliente", objeto.Cliente);
+                    cmd.Parameters.AddWithValue("dircliente", objeto.dircliente);
+                    cmd.Parameters.AddWithValue("Moneda", objeto.Moneda);
+                    cmd.Parameters.AddWithValue("item", objeto.item);
+                    cmd.Parameters.AddWithValue("cant", objeto.cant);
+                    cmd.Parameters.AddWithValue("Cod", objeto.Cod);
+                    cmd.Parameters.AddWithValue("NomArticulo", objeto.NomArticulo);
+                    cmd.Parameters.AddWithValue("fecha", objeto.fecha);
+                    cmd.Parameters.AddWithValue("Precio", objeto.Precio);
+                    cmd.Parameters.AddWithValue("MarcaPrecio", objeto.MarcaPrecio);
+
+                    cmd.Parameters.AddWithValue("RUCD", objeto.RUCD); 
+                    cmd.Parameters.AddWithValue("NomDealer", objeto.NomDealer);
+                    cmd.Parameters.AddWithValue("FecD", objeto.fecD);
+                    cmd.Parameters.AddWithValue("PrecioD", objeto.PrecioD);
+                    cmd.Parameters.AddWithValue("MarcaD", objeto.MarcaD);
+                    cmd.Parameters.AddWithValue("ObsD", objeto.ObsD);
+
+                    cmd.Parameters.AddWithValue("RUCP1", objeto.RUCP1);
+                    cmd.Parameters.AddWithValue("NomP1", objeto.NomP1);
+                    cmd.Parameters.AddWithValue("FecP1", objeto.FecP1);
+                    cmd.Parameters.AddWithValue("PrecioP1", objeto.PrecioP1);
+                    cmd.Parameters.AddWithValue("MarcaP1", objeto.MarcaP1);
+                    cmd.Parameters.AddWithValue("ObsP1", objeto.ObsP1);
+
+                    cmd.Parameters.AddWithValue("RUCP2", objeto.RUCP2);
+                    cmd.Parameters.AddWithValue("NomP2", objeto.NomP2);
+                    cmd.Parameters.AddWithValue("FecP2 ", objeto.FecP2);
+                    cmd.Parameters.AddWithValue("PrecioP2", objeto.PrecioP2);
+                    cmd.Parameters.AddWithValue("MarcaP2", objeto.MarcaP2);
+                    cmd.Parameters.AddWithValue("ObsP2", objeto.ObsP2);
+
+                    cmd.Parameters.AddWithValue("RUCP3", objeto.RUCP3);
+                    cmd.Parameters.AddWithValue("NomP3", objeto.NomP3);
+                    cmd.Parameters.AddWithValue("FecP3 ", objeto.FecP3);
+                    cmd.Parameters.AddWithValue("PrecioP3", objeto.PrecioP3);
+                    cmd.Parameters.AddWithValue("MarcaP3", objeto.MarcaP3);
+                    cmd.Parameters.AddWithValue("ObsP3", objeto.ObsP3);
+
+                    cmd.Parameters.AddWithValue("RUCP4", objeto.RUCP4);
+                    cmd.Parameters.AddWithValue("NomP4", objeto.NomP4);
+                    cmd.Parameters.AddWithValue("FecP4 ", objeto.FecP4);
+                    cmd.Parameters.AddWithValue("PrecioP4", objeto.PrecioP4);
+                    cmd.Parameters.AddWithValue("MarcaP4", objeto.MarcaP4);
+                    cmd.Parameters.AddWithValue("ObsP4", objeto.ObsP4);
+
+                    cmd.Parameters.AddWithValue("usuario", objeto.usuario);
+
+                    cmd.Parameters.AddWithValue("valorKVenta ", objeto.KVVenta);
+                    cmd.Parameters.AddWithValue("clienteKVenta", objeto.KCVenta);
+                    cmd.Parameters.AddWithValue("fecKVenta", objeto.KFVenta);
+
+                    cmd.Parameters.AddWithValue("valorKCotizacion ", objeto.KVCotizacion);
+                    cmd.Parameters.AddWithValue("clienteKCotizacion", objeto.KCCotizacion);
+                    cmd.Parameters.AddWithValue("fecKCotizacion", objeto.KFCotizacion);
+
+                    cmd.Parameters.AddWithValue("valorKNotaIngreso ", objeto.KVNotaIngreso);
+                    cmd.Parameters.AddWithValue("clienteKNotaIngreso", objeto.KCNotaIngreso);
+                    cmd.Parameters.AddWithValue("fecKNotaIngreso", objeto.KFNotaIngreso);
+
+
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+                var response = new Response<string>(ResponseType.Success, "agregado");
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (Exception ex)
+            {
+                var response = new Response<string>(ResponseType.Error, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
