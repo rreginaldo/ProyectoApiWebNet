@@ -2,11 +2,8 @@
 {
     public class KardexCoti
     {
-
-        public string FECHA { get; set; }
-        public double PRECIO { get; set; }
-        public string CLIENTE { get; set; }
-        public string MONEDA { get; set; }
-        public string MARCA { get; set; }
+        public double KVCotizacion { get; set; } //valor COTIZACION
+        public string KCCotizacion { get; set; }  //nombre cliente
+        public string KFCotizacion { get; set; } //fecha
     }
 }
