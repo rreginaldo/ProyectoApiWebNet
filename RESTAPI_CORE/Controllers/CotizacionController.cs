@@ -227,18 +227,13 @@ namespace RESTAPI_CORE.Controllers
                             });
                         }
                     }
-<<<<<<< HEAD
                 }
-                var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
-=======
-                } 
                 var response = new Response<List<KardexVenta>>(ResponseType.Success, lista);
->>>>>>> ade7fdf13c6c6f9959e72b0e69dc8b274c2df5d2
                 return StatusCode(StatusCodes.Status200OK, response);
             }
             catch (Exception ex)
             {
-                var response = new Response<List<KardexCoti>>(ResponseType.Error, ex.Message);
+                var response = new Response<List<KardexVenta>>(ResponseType.Error, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
@@ -279,7 +274,7 @@ namespace RESTAPI_CORE.Controllers
             }
             catch (Exception ex)
             {
-                var response = new Response<List<KardexCoti>>(ResponseType.Error, ex.Message);
+                var response = new Response<List<KardexNotaIngreso>>(ResponseType.Error, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
