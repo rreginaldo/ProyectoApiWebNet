@@ -177,11 +177,11 @@ namespace RESTAPI_CORE.Controllers
                         {
                             lista.Add(new KardexCoti
                             {
-                                FECHA = rd["FECHA"].ToString(),
-                                PRECIO = Convert.ToDouble(rd["PRECIO"].ToString()),
-                                CLIENTE = rd["CLIENTE"].ToString(),
-                                MONEDA = rd["MONEDA"].ToString(),
-                                MARCA = rd["MARCA"].ToString(),
+                               
+                                KVCotizacion = Convert.ToDouble(rd["PRECIO"].ToString()),
+                                KCCotizacion = rd["CLIENTE"].ToString(),
+                                KFCotizacion = rd["FECHA"].ToString()
+
                             });
                         }
                     }
@@ -201,7 +201,7 @@ namespace RESTAPI_CORE.Controllers
         [Route("KardexVenta/")]
         public IActionResult KardexVenta(string codigo, string codcliente)
         {
-            List<KardexCoti> lista = new List<KardexCoti>();
+            List<KardexVenta> lista = new List<KardexVenta>();
 
             try
             {
@@ -216,18 +216,18 @@ namespace RESTAPI_CORE.Controllers
                     {
                         while (rd.Read())
                         {
-                            lista.Add(new KardexCoti
+                            lista.Add(new KardexVenta
                             {
-                                FECHA = rd["FECHA"].ToString(),
-                                PRECIO = Convert.ToDouble(rd["PRECIO"].ToString()),
-                                CLIENTE = rd["CLIENTE"].ToString(),
-                                MONEDA = rd["MONEDA"].ToString(),
-                                MARCA = rd["MARCA"].ToString(),
+
+                                KVVenta = Convert.ToDouble(rd["PRECIO"].ToString()),
+                                KCVenta = rd["CLIENTE"].ToString(),
+                                KFVenta = rd["FECHA"].ToString()
+
                             });
                         }
                     }
                 } 
-                var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
+                var response = new Response<List<KardexVenta>>(ResponseType.Success, lista);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
             catch (Exception ex)
@@ -241,7 +241,7 @@ namespace RESTAPI_CORE.Controllers
         [Route("KardexNotaIngreso/")]
         public IActionResult KardexNotaIngreso(string codigo, string codcliente)
         {
-            List<KardexCoti> lista = new List<KardexCoti>();
+            List<KardexNotaIngreso> lista = new List<KardexNotaIngreso>();
 
             try
             {
@@ -256,18 +256,18 @@ namespace RESTAPI_CORE.Controllers
                     {
                         while (rd.Read())
                         {
-                            lista.Add(new KardexCoti
+                            lista.Add(new KardexNotaIngreso
                             {
-                                FECHA = rd["FECHA"].ToString(),
-                                PRECIO = Convert.ToDouble(rd["PRECIO"].ToString()),
-                                CLIENTE = rd["CLIENTE"].ToString(),
-                                MONEDA = rd["MONEDA"].ToString(),
-                                MARCA = rd["MARCA"].ToString(),
+                                
+                                KVNotaIngreso = Convert.ToDouble(rd["PRECIO"].ToString()),
+                                KCNotaIngreso = rd["CLIENTE"].ToString(),
+                                KFNotaIngreso = rd["FECHA"].ToString()
+
                             });
                         }
                     }
                 }
-                var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
+                var response = new Response<List<KardexNotaIngreso>>(ResponseType.Success, lista);
                 return StatusCode(StatusCodes.Status200OK, response);
 
             }
