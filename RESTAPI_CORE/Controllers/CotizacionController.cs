@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTAPI_CORE.Modelos;
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml.Linq;
 
 namespace RESTAPI_CORE.Controllers
 {
@@ -226,7 +227,7 @@ namespace RESTAPI_CORE.Controllers
                             });
                         }
                     }
-                } 
+                }
                 var response = new Response<List<KardexCoti>>(ResponseType.Success, lista);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
@@ -297,22 +298,22 @@ namespace RESTAPI_CORE.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     Secuencia = int.Parse(cmd.ExecuteScalar().ToString());
-                 
+
                 }
-        
+
                 var response = new Response<int>(ResponseType.Success, Secuencia);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
             catch (Exception ex)
             {
-                var response = new Response<List<Cliente>>(ResponseType.Error, ex.Message);
+                var response = new Response<int>(ResponseType.Error, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
 
         [HttpPost]
-        [Route("Guardar")]
-        public IActionResult Guardar([FromBody] Cotizacion objeto)
+        [Route("GuardarConvencional")]
+        public IActionResult GuardarConvencional([FromBody] Cotizacion objeto)
         {
             try
             {
@@ -334,7 +335,7 @@ namespace RESTAPI_CORE.Controllers
                     cmd.Parameters.AddWithValue("Precio", objeto.Precio);
                     cmd.Parameters.AddWithValue("MarcaPrecio", objeto.MarcaPrecio);
 
-                    cmd.Parameters.AddWithValue("RUCD", objeto.RUCD); 
+                    cmd.Parameters.AddWithValue("RUCD", objeto.RUCD);
                     cmd.Parameters.AddWithValue("NomDealer", objeto.NomDealer);
                     cmd.Parameters.AddWithValue("FecD", objeto.fecD);
                     cmd.Parameters.AddWithValue("PrecioD", objeto.PrecioD);
@@ -385,6 +386,86 @@ namespace RESTAPI_CORE.Controllers
 
 
 
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+                var response = new Response<string>(ResponseType.Success, "agregado");
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch (Exception ex)
+            {
+                var response = new Response<string>(ResponseType.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPost]
+        [Route("Guardar")]
+        public IActionResult Guardar([FromBody] List<Cotizacion> objeto)
+        {
+            try
+            {
+                var CotizacionXml = objeto.Select(i =>
+                new XElement("Cotizacion",
+                new XElement("idcotizacion", i.idcotizacion),
+                new XElement("codcliente", i.codcliente ?? ""),
+                new XElement("Cliente", i.Cliente ?? ""),
+                new XElement("dircliente", i.dircliente ?? ""),
+                new XElement("fecha", i.fecha ?? ""),
+                new XElement("Moneda", i.Moneda ?? ""),
+                new XElement("item", i.item ?? ""),
+                new XElement("cant", i.cant),
+                new XElement("Cod", i.Cod ?? ""),
+                new XElement("NomArticulo", i.NomArticulo ?? ""),
+                new XElement("Precio", i.Precio),
+                new XElement("MarcaPrecio", i.MarcaPrecio ?? ""),
+                new XElement("RUCD", i.RUCD ?? ""),
+                new XElement("NomDealer", i.NomDealer ?? ""),
+                new XElement("fecD", i.fecD ?? ""),
+                new XElement("PrecioD", i.PrecioD),
+                new XElement("MarcaD", i.MarcaD ?? ""),
+                new XElement("ObsD", i.ObsD ?? ""),
+                new XElement("RUCP1", i.RUCP1 ?? ""),
+                new XElement("NomP1", i.NomP1 ?? ""),
+                new XElement("FecP1", i.FecP1 ?? ""),
+                new XElement("PrecioP1", i.PrecioP1),
+                new XElement("MarcaP1", i.MarcaP1 ?? ""),
+                new XElement("ObsP1", i.ObsP1 ?? ""),
+                new XElement("RUCP2", i.RUCP2 ?? ""),
+                new XElement("NomP2", i.NomP2 ?? ""),
+                new XElement("FecP2", i.FecP2 ?? ""),
+                new XElement("PrecioP2", i.PrecioP2),
+                new XElement("MarcaP2", i.MarcaP2 ?? ""),
+                new XElement("ObsP2", i.ObsP2 ?? ""),
+                new XElement("RUCP3", i.RUCP3 ?? ""),
+                new XElement("NomP3", i.NomP3 ?? ""),
+                new XElement("FecP3", i.FecP3 ?? ""),
+                new XElement("PrecioP3", i.PrecioP3),
+                new XElement("MarcaP3", i.MarcaP3 ?? ""),
+                new XElement("ObsP3", i.ObsP3 ?? ""),
+                new XElement("RUCP4", i.RUCP4 ?? ""),
+                new XElement("NomP4", i.NomP4 ?? ""),
+                new XElement("FecP4", i.FecP4 ?? ""),
+                new XElement("PrecioP4", i.PrecioP4),
+                new XElement("MarcaP4", i.MarcaP4 ?? ""),
+                new XElement("ObsP4", i.ObsP4 ?? ""),
+                new XElement("KVVenta", i.KVVenta),
+                new XElement("KCVenta", i.KCVenta ?? ""),
+                new XElement("KFVenta", i.KFVenta ?? ""),
+                new XElement("KVCotizacion", i.KVCotizacion),
+                new XElement("KCCotizacion", i.KCCotizacion ?? ""),
+                new XElement("KFCotizacion", i.KFCotizacion ?? ""),
+                new XElement("KVNotaIngreso", i.KVNotaIngreso),
+                new XElement("KCNotaIngreso", i.KCNotaIngreso ?? ""),
+                new XElement("KFNotaIngreso", i.KFNotaIngreso ?? ""),
+                new XElement("usuario", i.usuario)));
+                var objXml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("Items", CotizacionXml));
+
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {
+                    conexion.Open();
+                    var cmd = new SqlCommand("Comparativo_CotizacionInsert", conexion);
+                    cmd.Parameters.AddWithValue("objXml", objXml);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.ExecuteNonQuery();
                 }
