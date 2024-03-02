@@ -44,14 +44,14 @@ namespace RESTAPI_CORE.Controllers
                             lista.Add(new Regla
                             {
 
-                                ID = Convert.ToInt32(rd["ID"].ToString()),
+                                idR = Convert.ToInt32(rd["idR"].ToString()),
                                 Nombre = rd["Nombre"].ToString(),
-                                Dealer = Convert.ToInt32(rd["Dealer"].ToString()),
-                                Alternativo = Convert.ToInt32(rd["Alternativo"].ToString()),
-                                Regla1 = Convert.ToDecimal(rd["Regla"].ToString()),
-                                NOExecede = Convert.ToDecimal(rd["NOExecede"].ToString()),
-                                valmin = Convert.ToDecimal(rd["valmin"].ToString()),
-                                valmax = Convert.ToDecimal(rd["valmax"].ToString()),
+                                signoA = rd["signoA"].ToString(),
+                                ValorUnit = Convert.ToInt32(rd["ValorUnit"].ToString()),
+                                signoB = rd["signoB"].ToString(),
+                                cant = Convert.ToInt32(rd["cant"].ToString()),
+                                factor = Convert.ToDecimal(rd["factor"].ToString()),
+
 
                             });
                         } 

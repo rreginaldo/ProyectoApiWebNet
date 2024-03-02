@@ -2,16 +2,13 @@
 {
     public class Regla
     {
-        public int ID { get; set; }
+        public int idR { get; set; }
         public string Nombre { get; set; }
-        public int Dealer { get; set; }
-        public int Alternativo { get; set; }
-        public decimal Regla1 { get; set; }
-        public decimal NOExecede { get; set; }
-
-        public decimal valmin { get; set; }
-        public decimal valmax { get; set; }
-
+        public string signoA { get; set; }
+        public int ValorUnit { get; set; }
+        public string signoB { get; set; }
+        public int cant { get; set; }
+        public decimal factor { get; set; }
 
     }
 }
